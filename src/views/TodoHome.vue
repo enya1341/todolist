@@ -3,13 +3,13 @@
     <div class="cord">
       <h1 class="title">Todo List</h1>
       <div class="todo flex">
-        <input type="text" class="text-add mgb-15">
-        <button class="button-add mgb-15">追加</button>
+        <input type="text" class="text-add mgb-15" v-model="list">
+        <button class="button-add mgb-15" @click="pushadd">追加</button>
       </div>
-      <div class="list flex mgb-15" v-for="(data,index) in datatest" :key="index">
-        <input :value="index+1" type="text" class="text-update">
-        <button class="button-update">更新</button>
-        <button class="button-delete">削除</button>
+      <div class="list flex mgb-15" v-for="(data,index) in datalist" :key="index">
+        <input value="data.list" type="text" class="text-update" v-model="todolist">
+        <button class="button-update" @click="pushup(index)">更新</button>
+        <button class="button-delete" @click="pushdel(index)">削除</button>
       </div>
     </div>
   </div>
@@ -17,16 +17,45 @@
 
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
-      datatest:[
-        {text:"1"},
-        {text:"2"}
-      ]
-    };
+      datalist: axios.get("https://limitless-thicket-15861.herokuapp.com/api/list").then((response) => console.log(response)),
+      todolist:""
+    }
+  },
+  methods: {
+    pushadd() {
+      axios
+        .post("https://limitless-thicket-15861.herokuapp.com/api/list", {
+          list: this.todolist
+        })
+        .then(response => {
+          console.log(response);
+          this.$router.replace("/");
+        })
+    },
+    pushup(index) {
+      axios
+        .put("https://limitless-thicket-15861.herokuapp.com/api/list" + list[index], {
+          list:this.todolist
+        })
+        .then(response => {
+          console.log(response);
+          this.$router.replace("/");
+        })
+    },
+    pushdel(index) {
+      axios
+        .delete("https://limitless-thicket-15861.herokuapp.com/api/list" + list[index])
+        .then(response => {
+          console.log(response);
+          this.$router.replace("/");
+        })
+    }
   }
-};
+}
 </script>
 
 
