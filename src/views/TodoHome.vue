@@ -21,14 +21,14 @@ import axios from "axios";
 export default {
   data() {
     return {
-      datalist: axios.get("https://limitless-thicket-15861.herokuapp.com/api/list").then((response) => console.log(response)),
+      datalist: await axios.get("https://limitless-thicket-15861.herokuapp.com/api/list").then((response) => console.log(response)),
       todolist:""
     }
   },
   methods: {
     pushadd() {
       axios
-        .post("https://limitless-thicket-15861.herokuapp.com/api/list", {
+        .post("https://limitless-thicket-15861.herokuapp.com/api/list/", {
           list: this.todolist
         })
         .then(response => {
@@ -38,7 +38,7 @@ export default {
     },
     pushup(index) {
       axios
-        .put("https://limitless-thicket-15861.herokuapp.com/api/list" + list[index], {
+        .put("https://limitless-thicket-15861.herokuapp.com/api/list/" + index, {
           list:this.todolist
         })
         .then(response => {
@@ -48,7 +48,7 @@ export default {
     },
     pushdel(index) {
       axios
-        .delete("https://limitless-thicket-15861.herokuapp.com/api/list" + list[index])
+        .delete("https://limitless-thicket-15861.herokuapp.com/api/list/" + index)
         .then(response => {
           console.log(response);
           this.$router.replace("/");
