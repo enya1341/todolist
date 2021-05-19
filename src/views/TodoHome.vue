@@ -3,13 +3,13 @@
     <div class="cord">
       <h1 class="title">Todo List</h1>
       <div class="todo flex">
-        <input type="text" class="text-add mgb-15" v-model="list">
+        <input type="text" class="text-add mgb-15" v-model="todolist">
         <button class="button-add mgb-15" @click="pushadd">追加</button>
       </div>
-      <div class="list flex mgb-15" v-for="(data,index) in datalist" :key="index">
-        <input value="data.list" type="text" class="text-update" v-model="todolist">
-        <button class="button-update" @click="pushup(index)">更新</button>
-        <button class="button-delete" @click="pushdel(index)">削除</button>
+      <div class="flex mgb-15" v-for="(data,index) in datalist.data" :key="index">
+        <input  type="text" class="text-update" v-model="data.list">
+        <button class="button-update" @click="pushup(data.id,data.list)">更新</button>
+        <button class="button-delete" @click="pushdel(data.id)">削除</button>
       </div>
     </div>
   </div>
@@ -21,40 +21,51 @@ import axios from "axios";
 export default {
   data() {
     return {
-      datalist: await axios.get("https://limitless-thicket-15861.herokuapp.com/api/list").then((response) => console.log(response)),
+      testlist:[
+        { slist:1 },
+        { slist:2 },
+        { slist:3 }
+      ],
+      datalist: [],
       todolist:""
     }
   },
   methods: {
     pushadd() {
       axios
-        .post("https://limitless-thicket-15861.herokuapp.com/api/list/", {
+        .post("https://limitless-thicket-15861.herokuapp.com/api/list", {
           list: this.todolist
         })
         .then(response => {
           console.log(response);
-          this.$router.replace("/");
+          this.$router.go()
         })
     },
-    pushup(index) {
+    pushup(datalistid,datalist) {
       axios
-        .put("https://limitless-thicket-15861.herokuapp.com/api/list/" + index, {
-          list:this.todolist
+        .put("https://limitless-thicket-15861.herokuapp.com/api/list/" + (datalistid), {
+          list:datalist
         })
         .then(response => {
           console.log(response);
-          this.$router.replace("/");
+          this.$router.go()
         })
     },
-    pushdel(index) {
+    pushdel(datalistdel) {
       axios
-        .delete("https://limitless-thicket-15861.herokuapp.com/api/list/" + index)
+        .delete("https://limitless-thicket-15861.herokuapp.com/api/list/" + datalistdel)
         .then(response => {
           console.log(response);
-          this.$router.replace("/");
+          this.$router.go()
         })
+    },
+    datalistin(){
+      axios.get("https://limitless-thicket-15861.herokuapp.com/api/list").then((response) => {this.datalist =response.data})
     }
-  }
+  },
+  created() {
+    this.datalistin();
+  },
 }
 </script>
 
