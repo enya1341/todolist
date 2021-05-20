@@ -2,15 +2,18 @@
   <div id="app">
     <div class="cord">
       <h1 class="title">Todo List</h1>
+
       <div class="todo flex">
         <input type="text" class="text-add mgb-15" v-model="todolist">
         <button class="button-add mgb-15" @click="pushadd">追加</button>
       </div>
+
       <div class="flex mgb-15" v-for="(data,index) in datalist.data" :key="index">
         <input  type="text" class="text-update" v-model="data.list">
         <button class="button-update" @click="pushup(data.id,data.list)">更新</button>
         <button class="button-delete" @click="pushdel(data.id)">削除</button>
       </div>
+
     </div>
   </div>
 </template>
@@ -21,16 +24,14 @@ import axios from "axios";
 export default {
   data() {
     return {
-      testlist:[
-        { slist:1 },
-        { slist:2 },
-        { slist:3 }
-      ],
       datalist: [],
       todolist:""
     }
   },
   methods: {
+    // --------------------- //
+    //     データの追加      //
+    // --------------------- //
     pushadd() {
       axios
         .post("https://limitless-thicket-15861.herokuapp.com/api/list", {
@@ -41,6 +42,10 @@ export default {
           this.$router.go()
         })
     },
+
+    // --------------------- //
+    //     データの更新      //
+    // --------------------- //
     pushup(datalistid,datalist) {
       axios
         .put("https://limitless-thicket-15861.herokuapp.com/api/list/" + (datalistid), {
@@ -51,6 +56,10 @@ export default {
           this.$router.go()
         })
     },
+
+    // --------------------- //
+    //     データの削除     //
+    // --------------------- //
     pushdel(datalistdel) {
       axios
         .delete("https://limitless-thicket-15861.herokuapp.com/api/list/" + datalistdel)
@@ -59,6 +68,11 @@ export default {
           this.$router.go()
         })
     },
+
+
+    // --------------------- //
+    //     データの取得      //
+    // --------------------- //
     datalistin(){
       axios.get("https://limitless-thicket-15861.herokuapp.com/api/list").then((response) => {this.datalist =response.data})
     }
@@ -72,9 +86,34 @@ export default {
 
 <style>
 
+/* --------------------- */
+/*     共有のスタイル    */
+/* --------------------- */
+
 .mgb-15{
   margin-bottom:15px;
 }
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  width:20%;
+  text-align: center;
+  padding: 8px 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+
+/* --------------------- */
+/*     通常のスタイル    */
+/* --------------------- */
+
+
 
 #app{
   background-color:rgb(128, 7, 209);
@@ -99,6 +138,8 @@ export default {
   color:black;
 }
 
+
+
 .text-add{
   width:70%;
   margin-left:15px;
@@ -110,6 +151,9 @@ export default {
   margin-left:15px;
   color:black;
 }
+
+
+
 
 .button-add{
   color:rgb(255, 115, 0);
@@ -132,17 +176,6 @@ export default {
   margin-right:15px;
 }
 
-.flex {
-  display: flex;
-  justify-content: space-between;
-}
 
-button {
-  width:20%;
-  text-align: center;
-  padding: 8px 0 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
 
 </style>

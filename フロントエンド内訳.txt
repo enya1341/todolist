@@ -1,0 +1,12 @@
+フロントエンド
+
+使用言語やツール
+・HTML
+・CSS
+・JavaScript
+・Vue.js
+・Netlify
+
+オブジェクト
+・datalist 配列 apiからデータベースのtodolistsを取得して代入
+・todolist 変数 データベースにデータを送る時に一時的にデータを保存する場所
